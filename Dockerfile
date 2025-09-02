@@ -20,7 +20,9 @@ RUN go mod download
 
 COPY . .
 COPY --from=builder /build/dist ./web/dist
-RUN go build -ldflags "-s -w -X veloera/common.Version=$(cat VERSION)" -o veloera
+ARG APP_VERSION
+RUN if [ -z "$APP_VERSION" ]; then APP_VERSION=$(cat VERSION); fi && \
+    go build -ldflags "-s -w -X veloera/common.Version=$APP_VERSION" -o veloera
 
 FROM alpine
 

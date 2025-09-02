@@ -80,6 +80,7 @@ jobs:
           # Optimize build performance
           build-args: |
             BUILDKIT_INLINE_CACHE=1
+            APP_VERSION=${{ github.ref_name }}
           # Parallel processing
           builder: ${{ steps.buildx.outputs.name }}
           # Set output to suppress verbose logs
