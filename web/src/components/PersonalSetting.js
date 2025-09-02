@@ -32,6 +32,7 @@ import {
   onGitHubOAuthClicked,
   onOIDCClicked,
   onLinuxDOOAuthClicked,
+  onNodelocOAuthClicked,
 } from './utils';
 import {
   Avatar,
@@ -882,6 +883,37 @@ const PersonalSetting = () => {
                         }}
                         disabled={
                           userState.user && userState.user.linux_do_id !== ''
+                        }
+                      >
+                        {t('绑定')}
+                      </Button>
+                    </div>
+                  </div>
+                </div>
+              )}
+              {status.nodeloc_oauth && (
+                <div style={{ marginTop: 10 }}>
+                  <Typography.Text strong>{t('Nodeloc')}</Typography.Text>
+                  <div
+                    style={{ display: 'flex', justifyContent: 'space-between' }}
+                  >
+                    <div>
+                      <Input
+                        value={
+                          userState.user && userState.user.nodeloc_id !== ''
+                            ? userState.user.nodeloc_id
+                            : t('未绑定')
+                        }
+                        readonly={true}
+                      ></Input>
+                    </div>
+                    <div>
+                      <Button
+                        onClick={() => {
+                          onNodelocOAuthClicked(status.nodeloc_client_id);
+                        }}
+                        disabled={
+                          userState.user && userState.user.nodeloc_id !== ''
                         }
                       >
                         {t('绑定')}

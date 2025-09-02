@@ -24,10 +24,12 @@ import {
   onGitHubOAuthClicked,
   onOIDCClicked,
   onLinuxDOOAuthClicked,
+  onNodelocOAuthClicked,
 } from '../utils';
 import OIDCIcon from '../OIDCIcon.js';
 import WeChatIcon from '../WeChatIcon';
 import LinuxDoIcon from '../LinuxDoIcon.js';
+import NodelocIcon from '../NodelocIcon.js';
 import { useTranslation } from 'react-i18next';
 
 const ThirdPartyAuth = ({ 
@@ -41,7 +43,8 @@ const ThirdPartyAuth = ({
     status.oidc_enabled ||
     status.wechat_login ||
     status.telegram_oauth ||
-    status.linuxdo_oauth;
+    status.linuxdo_oauth ||
+    status.nodeloc_oauth;
 
   if (!hasThirdPartyAuth) {
     return null;
@@ -124,6 +127,27 @@ const ThirdPartyAuth = ({
             }
           >
             使用 LinuxDO 继续
+          </Button>
+        )}
+        {status.nodeloc_oauth && (
+          <Button
+            type='tertiary'
+            theme='borderless'
+            size='large'
+            style={{
+              border: '1px solid var(--semi-color-border)',
+              borderRadius: '6px',
+              padding: '12px 16px',
+              width: '100%',
+              justifyContent: 'center',
+              position: 'relative',
+            }}
+            icon={<NodelocIcon style={{ position: 'absolute', left: '16px', top: '50%', transform: 'translateY(-50%)' }} />}
+            onClick={() =>
+              onNodelocOAuthClicked(status.nodeloc_client_id)
+            }
+          >
+            使用 Nodeloc 继续
           </Button>
         )}
         {status.wechat_login && (

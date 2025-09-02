@@ -91,6 +91,10 @@ const SystemSetting = () => {
     LinuxDOClientId: '',
     LinuxDOClientSecret: '',
     LinuxDOMinimumTrustLevel: '',
+    // Nodeloc OAuth2 settings
+    NodelocOAuthEnabled: '',
+    NodelocClientId: '',
+    NodelocClientSecret: '',
     // reverse proxy settings
     ReverseProxyEnabled: '',
     ReverseProxyProvider: '',
@@ -132,6 +136,7 @@ const SystemSetting = () => {
           case 'EmailAliasRestrictionEnabled':
           case 'SMTPSSLEnabled':
           case 'LinuxDOOAuthEnabled':
+          case 'NodelocOAuthEnabled':
           case 'ReverseProxyEnabled':
           case 'oidc.enabled':
             item.value = item.value === 'true';
@@ -525,6 +530,27 @@ const SystemSetting = () => {
     }
   };
 
+  const submitNodelocOAuth = async () => {
+    const options = [];
+
+    if (originInputs['NodelocClientId'] !== inputs.NodelocClientId) {
+      options.push({ key: 'NodelocClientId', value: inputs.NodelocClientId });
+    }
+    if (
+      originInputs['NodelocClientSecret'] !== inputs.NodelocClientSecret &&
+      inputs.NodelocClientSecret !== ''
+    ) {
+      options.push({
+        key: 'NodelocClientSecret',
+        value: inputs.NodelocClientSecret,
+      });
+    }
+
+    if (options.length > 0) {
+      await updateOptions(options);
+    }
+  };
+
   const submitReverseProxy = async () => {
     const options = [];
 
@@ -824,6 +850,15 @@ const SystemSetting = () => {
                       >
                         允许通过 OIDC 进行登录
                       </Form.Checkbox>
+                      <Form.Checkbox
+                        field='NodelocOAuthEnabled'
+                        noLabel
+                        onChange={(e) =>
+                          handleCheckboxChange('NodelocOAuthEnabled', e)
+                        }
+                      >
+                        允许通过 Nodeloc 账户登录 & 注册
+                      </Form.Checkbox>
                     </Col>
                   </Row>
                 </Form.Section>
@@ -1092,6 +1127,54 @@ const SystemSetting = () => {
                   </Row>
                   <Button onClick={submitLinuxDOOAuth}>
                     保存 Linux DO OAuth 设置
+                  </Button>
+                </Form.Section>
+              </Card>
+
+              <Card>
+                <Form.Section text='配置 Nodeloc OAuth'>
+                  <Text>
+                    用以支持通过 Nodeloc 进行登录注册
+                    <a
+                      href='https://conn.nodeloc.cc/apps'
+                      target='_blank'
+                      rel='noreferrer'
+                      style={{
+                        display: 'inline-block',
+                        marginLeft: 4,
+                        marginRight: 4,
+                      }}
+                    >
+                      点击此处
+                    </a>
+                    管理你的 Nodeloc OAuth App
+                  </Text>
+                  <Banner
+                    type='info'
+                    description={`回调 URL 填 ${inputs.ServerAddress ? inputs.ServerAddress : '网站地址'}/oauth/nodeloc`}
+                    style={{ marginBottom: 20, marginTop: 16 }}
+                  />
+                  <Row
+                    gutter={{ xs: 8, sm: 16, md: 24, lg: 24, xl: 24, xxl: 24 }}
+                  >
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                      <Form.Input
+                        field='NodelocClientId'
+                        label='Nodeloc Client ID'
+                        placeholder='输入你注册的 Nodeloc OAuth APP 的 ID'
+                      />
+                    </Col>
+                    <Col xs={24} sm={24} md={12} lg={12} xl={12}>
+                      <Form.Input
+                        field='NodelocClientSecret'
+                        label='Nodeloc Client Secret'
+                        type='password'
+                        placeholder='敏感信息不会发送到前端显示'
+                      />
+                    </Col>
+                  </Row>
+                  <Button onClick={submitNodelocOAuth}>
+                    保存 Nodeloc OAuth 设置
                   </Button>
                 </Form.Section>
               </Card>

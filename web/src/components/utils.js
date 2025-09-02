@@ -83,6 +83,17 @@ export async function onLinuxDOOAuthClicked(linuxdo_client_id, openInNewTab = fa
   }
 }
 
+export async function onNodelocOAuthClicked(nodeloc_client_id, openInNewTab = false) {
+  const state = await getOAuthState();
+  if (!state) return;
+  const url = `https://www.nodeloc.com/oauth/authorize?response_type=code&client_id=${nodeloc_client_id}&state=${state}`;
+  if (openInNewTab) {
+    window.open(url);
+  } else {
+    window.location.href = url;
+  }
+}
+
 let channelModels = undefined;
 export async function loadChannelModels() {
   const res = await API.get('/api/models');
