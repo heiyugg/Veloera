@@ -20,7 +20,7 @@ RUN go mod download
 
 COPY . .
 COPY --from=builder /build/dist ./web/dist
-RUN go build -ldflags "-s -w -X 'veloera/common.Version=$(cat VERSION)'" -o veloera
+RUN go build -ldflags "-s -w -X veloera/common.Version=$(cat VERSION)" -o veloera
 
 FROM alpine
 
